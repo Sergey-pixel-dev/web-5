@@ -3,18 +3,18 @@ package main
 import "fmt"
 
 func calculator(firstChan <-chan int, secondChan <-chan int, stopChan <-chan struct{}) <-chan int {
-	answerChan := make(chan int, 1)
-	select {
-	case val := <-firstChan:
-		answerChan <- val * val
-		return answerChan
-	case val := <-secondChan:
-		answerChan <- val * val * val
-		return answerChan
-	case <-stopChan:
-		answerChan <- 0
-		return answerChan
-	}
+	answerChan := make(chan int)
+	go func() {
+		defer close(answerChan)
+		select {
+		case val := <-firstChan:
+			answerChan <- val * 2
+		case val := <-secondChan:
+			answerChan <- val * 3
+		case <-stopChan:
+		}
+	}()
+	return answerChan
 }
 func main() {
 	var firstChan = make(chan int, 1)
