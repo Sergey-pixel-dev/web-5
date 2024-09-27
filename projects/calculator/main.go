@@ -20,6 +20,6 @@ func main() {
 	var firstChan = make(chan int, 1)
 	var secondChan = make(chan int, 1)
 	var stopChan = make(chan struct{}, 1)
-	stopChan <- struct{}{}
+	firstChan <- 5
 	fmt.Println(<-calculator(firstChan, secondChan, stopChan))
 }

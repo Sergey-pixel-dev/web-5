@@ -18,10 +18,12 @@ func removeDuplicates(in, out chan string) {
 func main() {
 	var in = make(chan string)
 	var out = make(chan string)
+	var str string
+	fmt.Scan(&str)
 	go removeDuplicates(in, out)
 	go func() {
 		defer close(in)
-		for _, i := range "1112222223333333444444" {
+		for _, i := range str {
 			in <- string(i)
 		}
 	}()
